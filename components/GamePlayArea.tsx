@@ -100,6 +100,7 @@ export default function GamePlayArea({ gameScore, setGameScore, onGameOver }: Ga
           ref={miniGameRef} 
           onScore={handleScore} 
           gameActive={gameActiveRef.current}
+          onGameOver={onGameOver} // Ensure this line is present
         />
       </motion.div>
       <motion.div 
