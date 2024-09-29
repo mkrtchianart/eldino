@@ -61,7 +61,7 @@ export default function GamePlayArea({ gameScore, setGameScore, onGameOver }: Ga
         cancelAnimationFrame(timerRef.current);
       }
     };
-  }, []); // Empty dependency array to run only once on mount
+  }, [/* other dependencies */, onGameOver]); // Added onGameOver to the dependency array
 
   return (
     <motion.div
@@ -99,8 +99,7 @@ export default function GamePlayArea({ gameScore, setGameScore, onGameOver }: Ga
         <MiniGame 
           ref={miniGameRef} 
           onScore={handleScore} 
-          gameActive={gameActiveRef.current} 
-          onGameOver={onGameOver} 
+          gameActive={gameActiveRef.current}
         />
       </motion.div>
       <motion.div 
