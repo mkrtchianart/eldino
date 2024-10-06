@@ -57,8 +57,8 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
     const addCactus = useCallback(() => {
       setCactuses(prevCactuses => {
         if (prevCactuses.length >= MAX_CACTUSES) return prevCactuses;
-        const minDistance = 20;
-        const maxDistance = 60;
+        const minDistance = 30; // Increased from 20
+        const maxDistance = 70; // Increased from 60
         const randomDistance = Math.random() * (maxDistance - minDistance) + minDistance;
         const newPosition = Math.max(100, lastCactusPosition.current + randomDistance);
         lastCactusPosition.current = newPosition;
@@ -92,7 +92,7 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
 
       const generateCactus = () => {
         addCactus();
-        const nextInterval = Math.random() * 240 + 160;
+        const nextInterval = Math.random() * 240 + 300; // Increased from 160 to 300
         generateCactusTimeout = setTimeout(generateCactus, nextInterval);
       };
 
