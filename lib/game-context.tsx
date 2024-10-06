@@ -13,7 +13,18 @@ type GameContextType = {
   resetTimer: () => void;
 };
 
+// Define the TelegramConfig interface to resolve the TypeScript error
+interface TelegramConfig {
+    disableVerticalSwipes: boolean;
+    // Add other configuration properties as needed
+}
+
 const GameContext = createContext<GameContextType | undefined>(undefined);
+
+const TelegramContext = React.createContext<TelegramConfig>({
+    disableVerticalSwipes: true, // Added to disable vertical swipes
+    // ... other configurations ...
+});
 
 export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [totalScore, setTotalScore] = useState(0);
