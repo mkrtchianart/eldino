@@ -2,6 +2,7 @@
 
 import React, { forwardRef, useImperativeHandle, useState, useEffect, useRef, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion'; // Ensure AnimatePresence is imported
+import { triggerHaptic } from '../utils/haptics'; // Add this import
 import styles from './MiniGame.module.css';
 
 interface MiniGameProps {
@@ -131,7 +132,8 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
           ) {
             const deductionAmount = Math.floor(currentScore / 2); // Calculate deduction based on currentScore
             onScore(-deductionAmount); // Pass the deduction amount
-            setDeductions(prev => [...prev, { id: Date.now(), value: -deductionAmount, y: 0 }]); // Use dynamic deduction
+            setDeductions(prev => [...prev, { id: Date.now(), value: `-${deductionAmount}`, y: 0 }]); // Use dynamic deduction
+            triggerHaptic([100, 50, 100]); // Trigger a vibration pattern
             return false; // Remove the cactus
           } else if (
             characterRect.left > cactusRight &&
@@ -199,7 +201,7 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 1 }}
             >
-              {deduction.value}
+              {deduction.value} {/* Display dynamic deduction amount */}
             </motion.div>
           ))}
         </AnimatePresence>
