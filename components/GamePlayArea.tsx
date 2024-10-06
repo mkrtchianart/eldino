@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useCallback, useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useRef, useCallback, useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronUp } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useGameContext } from '../lib/game-context';
@@ -14,20 +14,34 @@ interface GamePlayAreaProps {
 }
 
 export default function GamePlayArea({ gameScore, setGameScore, onGameOver }: GamePlayAreaProps) {
-  const { setTotalScore } = useGameContext();
-  const gameActiveRef = useRef(true);
+  const { setTotalScore, timer } = useGameContext();
   const miniGameRef = useRef<{ handleTap: () => void } | null>(null);
-  const [timeLeft, setTimeLeft] = useState(30);
-  const startTimeRef = useRef(Date.now());
-  const timerRef = useRef<number | null>(null);
+
+  // Define the game duration in seconds
+  const gameDuration = 30;
+
+  // Trigger game over when timer reaches the game duration
+  useEffect(() => {
+    if (timer >= gameDuration) {
+      onGameOver();
+    }
+  }, [timer, onGameOver]);
 
   const handleScore = useCallback((points: number) => {
-    setGameScore((prevScore) => prevScore + points);
-    setTotalScore((prevTotal) => prevTotal + points);
+    if (points < 0) {
+      setGameScore(prevScore => {
+        const newScore = Math.max(Math.floor(prevScore / 2), 0); // Cut score in half, not below 0
+        return newScore;
+      });
+      setTotalScore(prevTotal => Math.max(Math.floor(prevTotal / 2), 0)); // Similarly cut total score in half
+    } else {
+      setGameScore(prevScore => prevScore + points);
+      setTotalScore(prevTotal => prevTotal + points);
+    }
   }, [setGameScore, setTotalScore]);
 
   const handleTap = useCallback(() => {
-    if (gameActiveRef.current && miniGameRef.current) {
+    if (miniGameRef.current) {
       miniGameRef.current.handleTap();
     }
   }, []);
@@ -36,32 +50,6 @@ export default function GamePlayArea({ gameScore, setGameScore, onGameOver }: Ga
     rest: { scale: 1 },
     pressed: { scale: 0.95 },
   };
-
-  useEffect(() => {
-    startTimeRef.current = Date.now();
-    
-    const updateTimer = () => {
-      const elapsedTime = Math.floor((Date.now() - startTimeRef.current) / 1000);
-      const newTimeLeft = Math.max(30 - elapsedTime, 0);
-      
-      setTimeLeft(newTimeLeft);
-
-      if (newTimeLeft > 0 && gameActiveRef.current) {
-        timerRef.current = requestAnimationFrame(updateTimer);
-      } else {
-        gameActiveRef.current = false;
-        onGameOver();
-      }
-    };
-
-    timerRef.current = requestAnimationFrame(updateTimer);
-
-    return () => {
-      if (timerRef.current) {
-        cancelAnimationFrame(timerRef.current);
-      }
-    };
-  }, [/* other dependencies */, onGameOver]); // Added onGameOver to the dependency array
 
   return (
     <motion.div
@@ -79,7 +67,7 @@ export default function GamePlayArea({ gameScore, setGameScore, onGameOver }: Ga
           transition={{ delay: 0.3 }}
           className="text-xl font-bold bg-white px-4 py-2 rounded-md border-2 border-[#bd5d3a]"
         >
-          Time: {timeLeft}s
+          Time: {gameDuration - timer}s
         </motion.div>
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
@@ -99,8 +87,9 @@ export default function GamePlayArea({ gameScore, setGameScore, onGameOver }: Ga
         <MiniGame 
           ref={miniGameRef} 
           onScore={handleScore} 
-          gameActive={gameActiveRef.current}
-          onGameOver={onGameOver} // Ensure this line is present
+          gameActive={timer < gameDuration}
+          onGameOver={onGameOver}
+          currentScore={gameScore} // Pass currentScore here
         />
       </motion.div>
       <motion.div 

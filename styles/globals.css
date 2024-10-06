@@ -17,3 +17,23 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Allow interactions for interactive elements */
+a, button, input, textarea, select, [role="button"] {
+  pointer-events: auto;
+}
+
+/* Allow selection for input fields and textareas */
+input, textarea {
+  -webkit-user-select: auto;
+  -moz-user-select: auto;
+  -ms-user-select: auto;
+  user-select: auto;
+}

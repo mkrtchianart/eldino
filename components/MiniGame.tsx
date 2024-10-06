@@ -1,12 +1,14 @@
 "use client";
 
 import React, { forwardRef, useImperativeHandle, useState, useEffect, useRef, useCallback, memo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion'; // Ensure AnimatePresence is imported
 import styles from './MiniGame.module.css';
 
 interface MiniGameProps {
   onScore: (points: number) => void;
   gameActive: boolean;
-  onGameOver: () => void; // Added this line
+  onGameOver: () => void;
+  currentScore: number; // Added this line
 }
 
 interface Cactus {
@@ -26,13 +28,16 @@ const CactusComponent = memo(({ position }: { position: number }) => (
 CactusComponent.displayName = 'CactusComponent';
 
 const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
-  ({ onScore, gameActive, onGameOver }, ref) => {
+  ({ onScore, gameActive, onGameOver, currentScore }, ref) => { // Include currentScore
     const [isJumping, setIsJumping] = useState(false);
     const [cactuses, setCactuses] = useState<Cactus[]>([]);
     const characterRef = useRef<HTMLDivElement>(null);
     const gameContainerRef = useRef<HTMLDivElement>(null);
     const lastCactusPosition = useRef(100);
     const scoreRef = useRef(0);
+
+    // Add state for managing deduction messages
+    const [deductions, setDeductions] = useState<{ id: number; value: number; y: number }[]>([]);
 
     const handleTap = useCallback(() => {
       if (!gameActive || isJumping) return;
@@ -106,7 +111,7 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
         clearInterval(scoreInterval);
         clearTimeout(generateCactusTimeout);
       };
-    }, [gameActive, addCactus, moveCactuses, onScore, onGameOver]); // Added onGameOver if needed
+    }, [gameActive, addCactus, moveCactuses, onScore, onGameOver]);
 
     const checkCollisionAndScore = useCallback(() => {
       if (characterRef.current && gameContainerRef.current) {
@@ -124,26 +129,40 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
             characterRect.bottom > cactusTop &&
             !cactus.scored
           ) {
-            scoreRef.current -= 25;
-            onScore(-25);
+            const deductionAmount = Math.floor(currentScore / 2); // Calculate deduction based on currentScore
+            onScore(-deductionAmount); // Pass the deduction amount
+            setDeductions(prev => [...prev, { id: Date.now(), value: -deductionAmount, y: 0 }]); // Use dynamic deduction
             return false; // Remove the cactus
           } else if (
             characterRect.left > cactusRight &&
             !cactus.scored
           ) {
-            scoreRef.current += 10;
+            // Existing scoring logic
             onScore(10);
             return { ...cactus, scored: true };
           }
           return true;
         }));
       }
-    }, [onScore]);
+    }, [onScore, currentScore]);
 
     useEffect(() => {
       const collisionInterval = setInterval(checkCollisionAndScore, 100);
       return () => clearInterval(collisionInterval);
     }, [checkCollisionAndScore]);
+
+    // Handle deduction message animation
+    useEffect(() => {
+      if (deductions.length > 0) {
+        deductions.forEach(deduction => {
+          const timer = setTimeout(() => {
+            setDeductions(prev => prev.filter(item => item.id !== deduction.id));
+          }, 1000); // Duration should match the animation duration
+
+          return () => clearTimeout(timer);
+        });
+      }
+    }, [deductions]);
 
     useImperativeHandle(ref, () => ({
       handleTap
@@ -168,6 +187,22 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
           <CactusComponent key={cactus.id} position={cactus.position} />
         ))}
         <div className={styles.ground} />
+
+        {/* Render deduction messages above the character */}
+        <AnimatePresence>
+          {deductions.map(deduction => (
+            <motion.div
+              key={deduction.id}
+              className={styles.deductionMessage}
+              initial={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 0, y: -20 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 1 }}
+            >
+              {deduction.value}
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
     );
   }

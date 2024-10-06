@@ -11,19 +11,22 @@ export default function DinoGame() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [gameScore, setGameScore] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
-  const { tickets, setTickets } = useGameContext();
+  const { tickets, setTickets, startTimer, stopTimer, resetTimer } = useGameContext();
 
   const handlePlay = () => {
     if (tickets > 0) {
       setIsPlaying(true);
       setGameScore(0);
       setTickets(prevTickets => prevTickets - 1);
+      resetTimer();
+      startTimer(); // Start the timer immediately when play is clicked
     }
   };
 
   const handleGameOver = () => {
     setIsPlaying(false);
     setShowPopup(true);
+    stopTimer(); // Stop the timer when the game is over
   };
 
   const handlePlayAgain = () => {
@@ -34,6 +37,7 @@ export default function DinoGame() {
   const handleClose = () => {
     setShowPopup(false);
     setIsPlaying(false);
+    resetTimer();
   };
 
   return (
