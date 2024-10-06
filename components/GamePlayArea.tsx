@@ -6,7 +6,6 @@ import { ChevronUp } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useGameContext } from '../lib/game-context';
 import MiniGame from './MiniGame';
-import { triggerHaptic } from '../utils/haptics'; // Add this import
 
 interface GamePlayAreaProps {
   gameScore: number;
@@ -44,7 +43,6 @@ export default function GamePlayArea({ gameScore, setGameScore, onGameOver }: Ga
   const handleTap = useCallback(() => {
     if (miniGameRef.current) {
       miniGameRef.current.handleTap();
-      triggerHaptic(20); // Trigger a short vibration pattern
     }
   }, []);
 
