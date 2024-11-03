@@ -42,6 +42,19 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
 
     const [groundOffset, setGroundOffset] = useState(0);
 
+    const [background, setBackground] = useState('/bgs/bg1.png');
+
+    useEffect(() => {
+      const backgrounds = [
+        '/bgs/bg1.png',
+        '/bgs/bg2.png',
+        '/bgs/bg3.png',
+        '/bgs/bg4.png'
+      ];
+      const randomBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+      setBackground(randomBg);
+    }, []); // Empty dependency array means this runs once when component mounts
+
     const handleTap = useCallback(() => {
       if (!gameActive || isJumping) return;
       setIsJumping(true);
@@ -204,7 +217,11 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
     }, [gameActive, onGameOver]);
 
     return (
-      <div ref={gameContainerRef} className={styles.gameContainer}>
+      <div 
+        ref={gameContainerRef} 
+        className={styles.gameContainer}
+        style={{ backgroundImage: `url(${background})` }}
+      >
         <div 
           ref={characterRef}
           className={`${styles.character} ${isJumping ? styles.jump : ''}`}
