@@ -27,7 +27,7 @@
 
 .character {
   position: absolute;
-  bottom: 20px; /* Position just above the ground */
+  bottom: 17px; /* Position just above the ground */
   left: 20px;
   width: 30px;
   height: 50px;
@@ -46,7 +46,7 @@
 
 .cactus {
   position: absolute;
-  bottom: 20px; /* Position on the ground */
+  bottom: 17px; /* Position on the ground */
   width: 20px;
   height: 40px;
   background-color: green;

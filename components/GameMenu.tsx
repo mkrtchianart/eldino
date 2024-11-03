@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -17,6 +17,18 @@ interface GameMenuProps {
 export default function GameMenu({ onPlay }: GameMenuProps) {
   const { totalScore, tickets } = useGameContext();
   const [imageError, setImageError] = useState<string | null>(null);
+  const [background, setBackground] = useState('/bgs/bg1.png');
+
+  useEffect(() => {
+    const backgrounds = [
+      '/bgs/bg1.png',
+      '/bgs/bg2.png',
+      '/bgs/bg3.png',
+      '/bgs/bg4.png'
+    ];
+    const randomBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    setBackground(randomBg);
+  }, []);
 
   const buttonVariants = {
     rest: { scale: 1 },
@@ -30,14 +42,23 @@ export default function GameMenu({ onPlay }: GameMenuProps) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
-      className="flex-1 flex flex-col p-4"
+      className="flex-1 flex flex-col p-4 relative"
+      style={{
+        backgroundImage: `url(${background})`,
+        backgroundRepeat: 'repeat-x',
+        backgroundSize: 'auto 100%',
+      }}
     >
       <div className="flex justify-end mb-4">
         <ProfileButton />
       </div>
       <div className="text-center mb-6 mt-4">
-        <h2 className="text-2xl font-bold">Username</h2>
-        <p className="text-xl">Total Score: {totalScore}</p>
+        <h2 className="text-2xl font-bold text-[#3d3929] drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">
+          Username
+        </h2>
+        <p className="text-xl text-[#3d3929] drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">
+          Total Score: {totalScore}
+        </p>
       </div>
       <div className="flex-1 flex items-center justify-center mb-6 w-full overflow-hidden">
         <motion.div
