@@ -43,6 +43,7 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
     const [groundOffset, setGroundOffset] = useState(0);
 
     const [background, setBackground] = useState('/bgs/bg1.png');
+    const [ground, setGround] = useState('/roads/road1.png');
 
     useEffect(() => {
       const backgrounds = [
@@ -51,8 +52,16 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
         '/bgs/bg3.png',
         '/bgs/bg4.png'
       ];
+      const roads = [
+        '/roads/road1.png',
+        '/roads/road2.png',
+        '/roads/road3.png',
+        '/roads/road4.png'
+      ];
       const randomBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+      const randomRoad = roads[Math.floor(Math.random() * roads.length)];
       setBackground(randomBg);
+      setGround(randomRoad);
     }, []); // Empty dependency array means this runs once when component mounts
 
     const handleTap = useCallback(() => {
@@ -234,6 +243,7 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
         <div 
           className={styles.ground} 
           style={{ 
+            backgroundImage: `url(${ground})`,
             backgroundPosition: `${groundOffset}px 0` 
           }} 
         />

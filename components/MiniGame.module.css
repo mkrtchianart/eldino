@@ -17,7 +17,6 @@
   left: 0;
   right: 0;
   height: 20px;
-  background-image: url('/road.png');
   background-repeat: repeat-x;
   background-size: auto 100%;
 }
