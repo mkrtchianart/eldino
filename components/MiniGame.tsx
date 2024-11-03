@@ -17,7 +17,8 @@ interface Cactus {
   scored: boolean;
 }
 
-const MAX_CACTUSES = 10;
+const MAX_CACTUSES = 20;
+const MOVEMENT_SPEED = 4.5;  // Increased from 3.0 to 4.5
 
 const CactusComponent = memo(({ position }: { position: number }) => (
   <div className={styles.cactus} style={{ left: `${position}%` }}>
@@ -59,22 +60,37 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
     const addCactus = useCallback(() => {
       setCactuses(prevCactuses => {
         if (prevCactuses.length >= MAX_CACTUSES) return prevCactuses;
-        const minDistance = 30; // Increased from 20
-        const maxDistance = 70; // Increased from 60
+        
+        const minDistance = 30; // Decreased from 30 to 20
+        const maxDistance = 50; // Decreased from 70 to 40
         const randomDistance = Math.random() * (maxDistance - minDistance) + minDistance;
         const newPosition = Math.max(100, lastCactusPosition.current + randomDistance);
         lastCactusPosition.current = newPosition;
+        
         return [...prevCactuses, { id: Date.now(), position: newPosition, scored: false }];
       });
     }, []);
 
     const moveCactuses = useCallback(() => {
+      if (!gameContainerRef.current) return;
+      
+      const containerWidth = gameContainerRef.current.offsetWidth;
+      
       setCactuses(prevCactuses => {
         const updatedCactuses = prevCactuses
-          .map(cactus => ({
-            ...cactus,
-            position: cactus.position - 1.5
-          }))
+          .map(cactus => {
+            // Convert current percentage position to pixels
+            const currentPosInPixels = (cactus.position / 100) * containerWidth;
+            // Move by fixed pixel amount
+            const newPosInPixels = currentPosInPixels - MOVEMENT_SPEED;
+            // Convert back to percentage
+            const newPosition = (newPosInPixels / containerWidth) * 100;
+            
+            return {
+              ...cactus,
+              position: newPosition
+            };
+          })
           .filter(cactus => cactus.position > -20);
 
         if (updatedCactuses.length > 0) {
@@ -95,12 +111,13 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
 
       const generateCactus = () => {
         addCactus();
-        const nextInterval = Math.random() * 240 + 300; // Increased from 160 to 300
+        // Faster generation: roughly one cactus every second
+        const nextInterval = Math.random() * 160 + 200;  // Decreased from (240 + 300) to (160 + 200)
         generateCactusTimeout = setTimeout(generateCactus, nextInterval);
       };
 
       const updateGround = () => {
-        setGroundOffset(prev => prev - 1.5);  // Changed from -4.0 to -1.5
+        setGroundOffset(prev => prev - 2.5);
         animationFrame = requestAnimationFrame(updateGround);
       };
 
