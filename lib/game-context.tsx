@@ -72,3 +72,30 @@ export const useGameContext = () => {
   }
   return context;
 };
+
+const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'column' as const,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100vh',
+    gap: '1.5vh', // Reduced from 2vh
+  },
+  title: {
+    fontSize: '5vh', // Reduced from 6vh
+    marginBottom: '2vh', // Reduced from 3vh
+  },
+  button: {
+    fontSize: '2.5vh', // Reduced from 3vh
+    padding: '1.25vh 2.5vh', // Reduced from 1.5vh 3vh
+    margin: '0.8vh', // Reduced from 1vh
+    minWidth: '20vh', // Reduced from 25vh
+  },
+  select: {
+    fontSize: '2.5vh', // Reduced from 3vh
+    padding: '1.25vh', // Reduced from 1.5vh
+    minWidth: '20vh', // Reduced from 25vh
+  },
+  // ... rest of the styles
+};
