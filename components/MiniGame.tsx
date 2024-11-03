@@ -39,6 +39,8 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
     // Add state for managing deduction messages
     const [deductions, setDeductions] = useState<{ id: number; value: number; y: number }[]>([]);
 
+    const [groundOffset, setGroundOffset] = useState(0);
+
     const handleTap = useCallback(() => {
       if (!gameActive || isJumping) return;
       setIsJumping(true);
@@ -89,11 +91,17 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
       let cactusInterval: NodeJS.Timeout;
       let scoreInterval: NodeJS.Timeout;
       let generateCactusTimeout: NodeJS.Timeout;
+      let animationFrame: number;
 
       const generateCactus = () => {
         addCactus();
         const nextInterval = Math.random() * 240 + 300; // Increased from 160 to 300
         generateCactusTimeout = setTimeout(generateCactus, nextInterval);
+      };
+
+      const updateGround = () => {
+        setGroundOffset(prev => prev - 2.5);  // Increased from -1.2 to -2.5
+        animationFrame = requestAnimationFrame(updateGround);
       };
 
       if (gameActive) {
@@ -104,12 +112,15 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
           scoreRef.current += 1;
           onScore(1);
         }, 2400);
+
+        animationFrame = requestAnimationFrame(updateGround);
       }
 
       return () => {
         clearInterval(cactusInterval);
         clearInterval(scoreInterval);
         clearTimeout(generateCactusTimeout);
+        cancelAnimationFrame(animationFrame);
       };
     }, [gameActive, addCactus, moveCactuses, onScore, onGameOver]);
 
@@ -186,7 +197,12 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
         {cactuses.map((cactus) => (
           <CactusComponent key={cactus.id} position={cactus.position} />
         ))}
-        <div className={styles.ground} />
+        <div 
+          className={styles.ground} 
+          style={{ 
+            backgroundPosition: `${groundOffset}px 0` 
+          }} 
+        />
 
         {/* Render deduction messages above the character */}
         <AnimatePresence>

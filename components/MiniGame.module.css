@@ -11,9 +11,18 @@
 }
 
 .ground {
-  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   height: 20px;
-  background-color: brown;
+  background-image: url('/road.png');
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+}
+
+.groundPaused {
+  animation-play-state: paused;
 }
 
 .character {
