@@ -73,7 +73,7 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
         const updatedCactuses = prevCactuses
           .map(cactus => ({
             ...cactus,
-            position: cactus.position - 1.2
+            position: cactus.position - 1.5
           }))
           .filter(cactus => cactus.position > -20);
 
@@ -100,7 +100,7 @@ const MiniGame = forwardRef<{ handleTap: () => void }, MiniGameProps>(
       };
 
       const updateGround = () => {
-        setGroundOffset(prev => prev - 2.5);  // Increased from -1.2 to -2.5
+        setGroundOffset(prev => prev - 1.5);  // Changed from -4.0 to -1.5
         animationFrame = requestAnimationFrame(updateGround);
       };
 
