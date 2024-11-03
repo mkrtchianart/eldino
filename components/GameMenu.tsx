@@ -90,18 +90,55 @@ export default function GameMenu({ onPlay }: GameMenuProps) {
       <motion.div
         variants={buttonVariants}
         whileTap="pressed"
-        className="w-full h-20 mb-4 flex rounded-md overflow-hidden"
+        className="w-full h-20 mb-4 flex rounded-md overflow-hidden gap-2"
       >
-        <div className="bg-[#bd5d3a] flex items-center justify-center text-white text-xl font-bold border-r border-[#da7756] px-4">
-          <span role="img" aria-label="ticket" className="mr-2">🎟️</span>
+        <div 
+          className="h-full flex items-center justify-center text-white text-xl font-bold relative"
+          style={{ 
+            background: `url('/buttons/smallred.png')`,
+            backgroundSize: '100% 100%',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            width: '100px'
+          }}
+        >
+          <div className="w-6 h-6 mr-2 relative">
+            <Image
+              src="/buttons/key.png"
+              alt="key"
+              layout="fill"
+              objectFit="contain"
+            />
+          </div>
           {tickets}
         </div>
-        <Button
-          onClick={onPlay}
-          className="flex-grow h-full text-2xl rounded-none bg-[#da7756] hover:bg-[#bd5d3a] text-white"
-        >
-          Play
-        </Button>
+        <div className="flex-grow h-full flex items-center justify-center">
+          <motion.div 
+            onClick={onPlay}
+            className="w-[95%] h-[90%] relative cursor-pointer"
+            animate={{
+              scale: [1, 1.06, 1],
+            }}
+            transition={{
+              duration: 1.2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            <div 
+              className="absolute inset-0"
+              style={{ 
+                background: `url('/buttons/playbutton.png')`,
+                backgroundSize: '100% 100%',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+              }}
+            />
+            <div className="flex items-center justify-center h-full relative">
+              <span className="text-white text-2xl font-bold">Play</span>
+            </div>
+          </motion.div>
+        </div>
       </motion.div>
       <div className="flex">
         <div className="flex-grow mr-2">
@@ -109,9 +146,25 @@ export default function GameMenu({ onPlay }: GameMenuProps) {
         </div>
         <motion.div variants={buttonVariants} whileTap="pressed" className="w-1/4">
           <Link href="/upgrades" passHref>
-            <Button variant="outline" className="w-full h-14 border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white rounded-md">
-              Upgrades
-            </Button>
+            <div 
+              className="w-full h-16 flex flex-col items-center justify-center text-white font-bold"
+              style={{ 
+                background: `url('/buttons/blueBtnRd.png')`,
+                backgroundSize: '100% 100%',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+              }}
+            >
+              <div className="w-6 h-6 relative mb-1">
+                <Image
+                  src="/buttons/shop.png"
+                  alt="shop"
+                  layout="fill"
+                  objectFit="contain"
+                />
+              </div>
+              <span className="text-sm">Upgrades</span>
+            </div>
           </Link>
         </motion.div>
       </div>

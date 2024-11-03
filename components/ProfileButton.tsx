@@ -1,9 +1,7 @@
- "use client";
+"use client";
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { User } from 'lucide-react';
-import { Button } from "@/components/ui/button";
 
 export default function ProfileButton() {
   const buttonVariants = {
@@ -14,13 +12,17 @@ export default function ProfileButton() {
   return (
     <motion.div variants={buttonVariants} whileTap="pressed">
       <Link href="/profile" passHref>
-        <Button
-          variant="outline"
-          className="rounded-md transition-all duration-300 ease-in-out flex items-center justify-center px-4 py-2 border-[#bd5d3a] text-[#3d3929]"
+        <div 
+          className="flex items-center justify-center text-white font-bold px-4 py-2 relative"
+          style={{ 
+            background: `url('/buttons/greenBtnRd.png')`,
+            backgroundSize: '100% 100%',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
         >
-          <User size={24} className="mr-2" />
-          <span>My Profile</span>
-        </Button>
+          Profile
+        </div>
       </Link>
     </motion.div>
   );

@@ -23,22 +23,40 @@ export default function GameOverPopup({ score, onPlayAgain, onClose }: GameOverP
       exit={{ opacity: 0 }}
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
     >
-      <Card className="w-80 bg-[#F8F8F7] text-[#3d3929] rounded-lg">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">Game Over!</CardTitle>
+      <Card className="w-80 bg-[url('/boxes/table.png')] bg-contain bg-no-repeat bg-center text-[#3d3929] rounded-lg border-0">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-xl font-bold text-center">Game Over!</CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="text-xl mb-6 text-center">Your score: {score}</p>
-          <div className="flex flex-col space-y-4">
-            <motion.div variants={buttonVariants} whileTap="pressed">
-              <Button onClick={onPlayAgain} className="w-full bg-[#da7756] hover:bg-[#bd5d3a] text-white rounded-md">
+        <CardContent className="py-4">
+          <p className="text-lg mb-4 text-center">Your score: {score}</p>
+          <div className="flex flex-row space-x-3 px-8">
+            <motion.div variants={buttonVariants} whileTap="pressed" className="flex-1">
+              <div 
+                onClick={onPlayAgain}
+                className="w-full h-12 flex items-center justify-center text-white font-bold"
+                style={{ 
+                  background: `url('/buttons/greenBtnRd.png')`,
+                  backgroundSize: '100% 100%',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat'
+                }}
+              >
                 Play Again
-              </Button>
+              </div>
             </motion.div>
-            <motion.div variants={buttonVariants} whileTap="pressed">
-              <Button onClick={onClose} variant="outline" className="w-full border-[#bd5d3a] text-[#3d3929] hover:bg-[#da7756] hover:text-white rounded-md">
+            <motion.div variants={buttonVariants} whileTap="pressed" className="flex-1">
+              <div 
+                onClick={onClose}
+                className="w-full h-12 flex items-center justify-center text-white font-bold"
+                style={{ 
+                  background: `url('/buttons/smallred.png')`,
+                  backgroundSize: '100% 100%',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat'
+                }}
+              >
                 Close
-              </Button>
+              </div>
             </motion.div>
           </div>
         </CardContent>

@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from "@/components/ui/button";
 import { useGameContext } from '../lib/game-context';
 import confetti from 'canvas-confetti';
 
@@ -100,23 +99,27 @@ export default function AutoRunButton() {
         variants={buttonVariants} 
         animate={autoRunPoints > 0 ? "collect" : "rest"}
         whileTap={!isAutoRunning ? "pressed" : undefined}
-        className="relative mb-8" // Changed from mb-4 to mb-8 for more bottom margin
+        className="relative mb-8"
       >
-        <Button
-          ref={buttonRef}
-          onClick={handleAutoRun}
-          disabled={isAutoRunning}
-          variant="outline"
-          className={`w-full h-14 border-2 ${
+        <div 
+          className={`relative w-full h-16 flex items-center justify-center ${
             isAutoRunning
-              ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-              : autoRunPoints > 0
-              ? 'bg-[#BD5D39] text-white'
-              : 'border-[#bd5d3a] text-[#3d3929] hover:bg-[#da7756] hover:text-white'
-          } rounded-md relative overflow-hidden`}
+              ? 'opacity-50 cursor-not-allowed'
+              : 'cursor-pointer'
+          }`}
+          onClick={!isAutoRunning ? handleAutoRun : undefined}
         >
-          <div className="flex justify-center items-center w-full h-full">
-            <span className="z-10 relative">
+          <div 
+            className="absolute inset-0"
+            style={{ 
+              background: `url('/buttons/orangeBtnSq.png')`,
+              backgroundSize: '100% 100%',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat'
+            }}
+          />
+          <div className="flex justify-center items-center w-full h-full relative">
+            <span className="z-10 text-white font-bold">
               {isAutoRunning ? (
                 "Running"
               ) : autoRunPoints > 0 ? (
@@ -126,7 +129,7 @@ export default function AutoRunButton() {
               )}
             </span>
             {isAutoRunning && (
-              <span className="z-10 absolute right-4">
+              <span className="z-10 absolute right-4 text-white">
                 {timeLeft.split('').map((digit, index) => (
                   <AnimatePresence mode="wait" key={`${index}-${digit}`}>
                     <AnimatedDigit digit={digit} />
@@ -136,11 +139,15 @@ export default function AutoRunButton() {
             )}
           </div>
           {isAutoRunning && (
-            <div className="absolute inset-0 bg-[#da7756] opacity-30 transition-all duration-100 ease-linear"
-                 style={{ width: `${autoRunProgress}%` }}
+            <div 
+              className="absolute inset-0 transition-all duration-100 ease-linear z-20"
+              style={{ 
+                width: `${autoRunProgress}%`,
+                backgroundColor: 'rgba(61, 57, 41, 0.3)' // Darker tone with some transparency
+              }}
             />
           )}
-        </Button>
+        </div>
       </motion.div>
     </AnimatePresence>
   );

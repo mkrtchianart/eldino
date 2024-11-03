@@ -65,7 +65,7 @@ export default function GamePlayArea({ gameScore, setGameScore, onGameOver }: Ga
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="text-xl font-bold bg-white px-4 py-2 rounded-md border-2 border-[#bd5d3a]"
+          className="text-xl font-bold bg-white px-4 py-2 rounded-2xl border-2 border-[#b00000]"
         >
           Time: {gameDuration - timer}s
         </motion.div>
@@ -73,13 +73,13 @@ export default function GamePlayArea({ gameScore, setGameScore, onGameOver }: Ga
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="text-xl font-bold bg-white px-4 py-2 rounded-md border-2 border-[#bd5d3a]"
+          className="text-xl font-bold bg-white px-4 py-2 rounded-2xl border-2 border-[#b00000]"
         >
           Score: {gameScore}
         </motion.div>
       </div>
       <motion.div
-        className="flex-1 border-4 border-[#bd5d3a] mx-4 mt-4 mb-6 rounded-lg bg-white overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.3)] h-[60vh]"
+        className="flex-1 border-4 border-[#b00000] mx-4 mt-4 mb-6 rounded-2xl bg-white overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.3)] h-[60vh]"
         initial={{ scaleY: 0 }}
         animate={{ scaleY: 1 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
@@ -89,7 +89,7 @@ export default function GamePlayArea({ gameScore, setGameScore, onGameOver }: Ga
           onScore={handleScore} 
           gameActive={timer < gameDuration}
           onGameOver={onGameOver}
-          currentScore={gameScore} // Pass currentScore here
+          currentScore={gameScore}
         />
       </motion.div>
       <motion.div 
@@ -102,7 +102,10 @@ export default function GamePlayArea({ gameScore, setGameScore, onGameOver }: Ga
         <Button
           className="w-full h-full text-[#3D3929] text-2xl font-bold rounded-lg flex items-center justify-center relative overflow-hidden"
           style={{
-            background: 'radial-gradient(circle, #F8F8F7 5%, #EBC3B1 40%, #DA7756 100%)',
+            background: `url('/boxes/orangebox.png')`,
+            backgroundSize: '100% 100%',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
           }}
         >
           <span className="relative z-10 flex items-center justify-center">
