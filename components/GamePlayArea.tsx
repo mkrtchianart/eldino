@@ -6,7 +6,7 @@ import { ChevronUp } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useGameContext } from '../lib/game-context';
 import MiniGame from './MiniGame';
-import styles from '@/styles/telegram-scroll.module.css';
+import styles from '../styles/telegram-scroll.css';
 
 interface GamePlayAreaProps {
   gameScore: number;

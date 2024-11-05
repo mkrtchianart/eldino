@@ -1,0 +1,41 @@
+.telegramScroll {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  overscroll-behavior: contain;
+  -webkit-overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+.telegramScroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.telegramScroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.telegramScroll::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  transition: background-color 0.2s;
+}
+
+.telegramScroll::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+  .telegramScroll {
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  }
+  
+  .telegramScroll::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .telegramScroll::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+} 
