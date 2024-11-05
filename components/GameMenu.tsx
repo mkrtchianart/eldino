@@ -9,7 +9,7 @@ import ProfileButton from './ProfileButton';
 import AutoRunButton from './AutoRunButton';
 import { Button } from "@/components/ui/button";
 import dinoImage from './assets/dino.png';
-import styles from '../styles/telegram-scroll.module.css';
+import styles from '@/styles/telegram-scroll.module.css';
 
 interface GameMenuProps {
   onPlay: () => void;
