@@ -9,6 +9,7 @@ import ProfileButton from './ProfileButton';
 import AutoRunButton from './AutoRunButton';
 import { Button } from "@/components/ui/button";
 import dinoImage from './assets/dino.png';
+import styles from '../styles/telegram-scroll.module.css';
 
 interface GameMenuProps {
   onPlay: () => void;
@@ -42,8 +43,9 @@ export default function GameMenu({ onPlay }: GameMenuProps) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
-      className="flex-1 flex flex-col p-4 relative"
+      className={`flex-1 flex flex-col p-4 relative ${styles.telegramScroll}`}
       style={{
+        height: 'calc(100vh - 64px)',
         backgroundImage: `url(${background})`,
         backgroundRepeat: 'repeat-x',
         backgroundSize: 'auto 100%',

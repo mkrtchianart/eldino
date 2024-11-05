@@ -6,6 +6,7 @@ import { ChevronUp } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useGameContext } from '../lib/game-context';
 import MiniGame from './MiniGame';
+import styles from '../styles/telegram-scroll.module.css';
 
 interface GamePlayAreaProps {
   gameScore: number;
@@ -58,7 +59,8 @@ export default function GamePlayArea({ gameScore, setGameScore, onGameOver }: Ga
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 50 }}
       transition={{ duration: 0.3 }}
-      className="flex-1 flex flex-col bg-[#F8F8F7]"
+      className={`flex-1 flex flex-col bg-[#F8F8F7] ${styles.telegramScroll}`}
+      style={{ height: 'calc(100vh - 64px)' }}
     >
       <div className="flex justify-between p-4">
         <motion.div

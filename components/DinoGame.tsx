@@ -41,7 +41,7 @@ export default function DinoGame() {
   };
 
   return (
-    <div className="h-screen bg-[#F8F8F7] flex flex-col text-[#3d3929]">
+    <div className="h-screen bg-[#F8F8F7] flex flex-col text-[#3d3929] overflow-hidden">
       <AnimatePresence mode="wait">
         {!isPlaying ? (
           <GameMenu onPlay={handlePlay} />
